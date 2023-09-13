@@ -48,21 +48,18 @@ class similarityScoreView(APIView):
                         cnt = cnt+1
                 similarity_score = cnt*5
                 result = {
-                    "user1" : user['id'],
-                    "user1Name" : user['name'],
-                    "user2": query['id'],
-                    "user2Name" : query['name'],
-                    "similarity_score" : f"{similarity_score}"
+                    'user1' : user['id'],
+                    'user1Name' : user['name'],
+                    'user2': query['id'],
+                    'user2Name' : query['name'],
+                    'similarity_score' : f"{similarity_score}"
                 }
-                print("1")
-                serializer2 = similarityScoreSerializer(data=result)
-                print("2")
-                similarityScore.save(result)
-                if serializer2.is_valid():
-                    serializer2.save()
-                    print("3")
-                    print(serializer2.data)
-                    List.append(serializer2.data)
+            
+                scoreSerializer = similarityScoreSerializer(data=result)
+            
+                if scoreSerializer.is_valid(raise_exception=True):
+                    scoreSerializer.save()
+                    List.append(scoreSerializer.data)
             return HttpResponse(json.dumps({"status":"success","message":List}), content_type = 'application/json' ,status = 200)
 
         except Exception as e:
@@ -73,13 +70,12 @@ class similarityScoreView(APIView):
         try:
             name = request.GET.get('name','')
             page_size = 5
-            page_number = 1
+            page_number = int(request.GET.get('page_number','1'))
             queryset = []
             if name:
-                queryset = similarityScore.objects.filter(Q(user1Name__icontains=name) & Q(user2Name__icontains=name)).values()
+                queryset = similarityScore.objects.filter(Q(user1Name__icontains=name) & Q(user2Name__icontains=name)).order_by('id')
             else:
-                queryset = similarityScore.objects.all().values()
-            print(queryset)
+                queryset = similarityScore.objects.get_queryset().order_by('id')
             paginator = Paginator(queryset,page_size)
             page_obj = paginator.page(page_number)
             data = page_obj.object_list

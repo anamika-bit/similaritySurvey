@@ -1,0 +1,14 @@
+requirements to run api:-
+1.first activate virtual enviornment with command:-
+    source env/bin/activate
+2.then, install django and djangorest-framework to test api with following command:-
+    pip3 install django
+    pip3 install djangorestframework
+
+To test the api:-
+1. first insert data into Survey model which will contain responses of different users/people.
+2.Then, hit similarityScore endpoint with post request with a user id in body to calculate similarity percentage of that user 
+with id with every other user.
+3. Then hit similarityScore endpoint to get similarity scores of users in pages of 5 objects.You can also give name 
+or page number in route to filter accordingly.
+4. some snaps of outputs are also uploaded with code.  

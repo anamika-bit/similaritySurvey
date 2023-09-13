@@ -32,9 +32,9 @@ class Survey(models.Model):
 
 
 class similarityScore(models.Model):
-    user1 = models.ForeignKey(Survey,related_name='user1',on_delete = models.CASCADE)
+    user1 = models.ForeignKey(Survey,on_delete = models.CASCADE)
     user1Name = models.CharField(max_length = 30,blank=False,default = 'root')
-    user2 = models.ForeignKey(Survey,related_name='user2',on_delete = models.CASCADE)
+    user2 = models.ForeignKey(Survey,related_name = 'member_of',on_delete = models.CASCADE)
     user2Name = models.CharField(max_length = 30,blank=False,default = 'root')
     similarity_score = models.CharField(max_length = 10,blank = False)
 
